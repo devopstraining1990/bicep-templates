@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "vnetName": {
+        "value": "vnet001"
+      },
+      "location": {
+        "value": "eastus"
+      },
+      "ipAddressPrefixes":{
+        "value": ["10.0.0.0/16"]
+      },
+      "env": {
+        "value": "test"
+      },
+     "subnets": {
+        "value": [ {
+            "name": "frontend",
+            "subnetIPPrefix": ["10.0.0.0/26"]
+        },
+        {
+            "name": "backend",
+            "subnetIPPrefix": ["10.0.1.0/26"]
+        }]
+     }
+    }
+  }
+
+
+  

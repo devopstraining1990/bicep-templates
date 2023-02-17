@@ -1,0 +1,14 @@
+az group create -l eastus -n rg-conapps
+
+az group show --name rg-conapps -o tsv  --query "id" 
+
+az network vnet create --name vnet-aca-01 --resource-group rg-conapps --address-prefixes 192.168.0.0/16 --location eastus --subnet-name subnet02 --subnet-prefixes 192.168.0.0/23 
+
+az network vnet show --name vnet-aca-01 --resource-group rg-conapps  -o tsv --query "subnets:id"
+az monitor log-analytics workspace create --resource-group rg-conapps --workspace-name log-containerapps-workspace001 --location eastus
+
+az monitor log-analytics workspace show --resource-group rg-conapps --workspace-name log-containerapps-workspace001 -o tsv --query "id"
+
+az containerapp env create --name dev-env --resource-group rg-conapps --location eastus --logs-workspace-id f3adb133-ad12-4193-a2e7-504d8d7435b3 --logs-workspace-key RZGAlhlzMnmEoZjp3GYIwYprd/3xRQj9tX9KmWZQPhxXvs4/7dc4xDkn3x0nUoRFuNlL6almsTnJcHxLK/g6AA== --infrastructure-subnet-resource-id /subscriptions/3b56a1ce-9761-4c72-9968-48d7d873705c/resourceGroups/rg-conapps/providers/Microsoft.Network/virtualNetworks/vnet-aca-01/subnets/subnet02
+
+az containerapp create --name apppark --resource-group rg-conapps --environment dev-env --image "devopstraining1990/parking:137" --min-replicas 0 --max-replicas 2 --registry-server hub.docker.io  --registry-username devopstraining1990 --registry-password devops0523 --target-port 8080 --ingress 'external'
